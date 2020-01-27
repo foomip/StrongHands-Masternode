@@ -14,13 +14,12 @@ COIN_NAME='shmn'
 COIN_PORT=50005
 RPC_PORT=50006
 
-NODEIP=$(curl -s4 icanhazip.com)
+NODEIP="10.10.10.10"
 
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m'
-
 
 function download_node() {
   echo -e "Prepare to download ${GREEN}$COIN_NAME${NC}."
