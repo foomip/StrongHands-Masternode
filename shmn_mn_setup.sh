@@ -270,7 +270,7 @@ function setup_node {
 #   get_ip
 #   create_config
   create_key
-  update_config
+#   update_config
 #   enable_firewall
   important_information
 #   configure_systemd
