@@ -2,15 +2,15 @@
 #!/bin/bash
 
 TMP_FOLDER=$(mktemp -d)
-CONFIG_FILE='shmn.conf'
-CONFIGFOLDER='/root/.shmn'
-COIN_DAEMON='shmnd'
-COIN_CLI='shmn-cli'
-COIN_TX='shmn-tx'
-COIN_PATH='/usr/local/bin/'
-COIN_TGZ='https://github.com/bitcoinbabys/StrongHandsMasterNode/releases/download/v2400/ubu64-shmnd-v2400.zip'
+CONFIG_FILE=shmn.conf
+CONFIGFOLDER=/root/.shmn
+COIN_DAEMON=shmnd
+COIN_CLI=shmn-cli
+COIN_TX=shmn-tx
+COIN_PATH=/usr/local/bin/
+COIN_TGZ="https://github.com/bitcoinbabys/StrongHandsMasterNode/releases/download/v2400/ubu64-shmnd-v2400.zip"
 COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
-COIN_NAME='shmn'
+COIN_NAME=shmn
 COIN_PORT=50005
 RPC_PORT=50006
 
@@ -106,25 +106,26 @@ EOF
 }
 
 function create_key() {
-  echo -e "Enter your ${RED}$COIN_NAME Masternode Private Key${NC}. Leave it blank to generate a new ${RED}Masternode Private Key${NC} for you:"
-  read -e COINKEY
-  if [[ -z "$COINKEY" ]]; then
-  $COIN_PATH$COIN_DAEMON -daemon
-  sleep 30
-  if [ -z "$(ps axo cmd:100 | grep $COIN_DAEMON)" ]; then
-   echo -e "${RED}$COIN_NAME server couldn not start. Check /var/log/syslog for errors.{$NC}"
-   exit 1
-  fi
-  COINKEY=$($COIN_PATH$COIN_CLI masternode genkey)
-  if [ "$?" -gt "0" ];
-    then
-    echo -e "${RED}Wallet not fully loaded. Let us wait and try again to generate the Private Key${NC}"
-    sleep 30
-    COINKEY=$($COIN_PATH$COIN_CLI masternode genkey)
-  fi
-  $COIN_PATH$COIN_CLI stop
-fi
-clear
+#   echo -e "Enter your ${RED}$COIN_NAME Masternode Private Key${NC}. Leave it blank to generate a new ${RED}Masternode Private Key${NC} for you:"
+#   read -e COINKEY
+#   if [[ -z "$COINKEY" ]]; then
+#   $COIN_PATH$COIN_DAEMON -daemon
+#   sleep 30
+#   if [ -z "$(ps axo cmd:100 | grep $COIN_DAEMON)" ]; then
+#    echo -e "${RED}$COIN_NAME server couldn not start. Check /var/log/syslog for errors.{$NC}"
+#    exit 1
+#   fi
+#   COINKEY=$($COIN_PATH$COIN_CLI masternode genkey)
+#   if [ "$?" -gt "0" ];
+#     then
+#     echo -e "${RED}Wallet not fully loaded. Let us wait and try again to generate the Private Key${NC}"
+#     sleep 30
+#     COINKEY=$($COIN_PATH$COIN_CLI masternode genkey)
+#   fi
+#   $COIN_PATH$COIN_CLI stop
+# fi
+# clear
+  COINKEY=building
 }
 
 function update_config() {
@@ -266,13 +267,13 @@ function important_information() {
 }
 
 function setup_node() {
-  get_ip
-  create_config
+#   get_ip
+#   create_config
   create_key
   update_config
-  enable_firewall
+#   enable_firewall
   important_information
-  configure_systemd
+#   configure_systemd
 }
 
 
@@ -281,6 +282,6 @@ clear
 
 checks
 prepare_system
-create_swap
+# create_swap
 download_node
 setup_node
