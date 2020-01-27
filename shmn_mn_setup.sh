@@ -21,7 +21,7 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m'
 
-function download_node() {
+function download_node {
   echo -e "Prepare to download ${GREEN}$COIN_NAME${NC}."
   cd $TMP_FOLDER >/dev/null 2>&1
   wget -q $COIN_TGZ
@@ -36,7 +36,7 @@ function download_node() {
 }
 
 
-function configure_systemd() {
+function configure_systemd {
   cat << EOF > /etc/systemd/system/$COIN_NAME.service
 [Unit]
 Description=$COIN_NAME service
@@ -73,7 +73,7 @@ EOF
 }
 
 
-function create_config() {
+function create_config {
   mkdir $CONFIGFOLDER >/dev/null 2>&1
   RPCUSER=$(tr -cd '[:alnum:]' < /dev/urandom | fold -w10 | head -n1)
   RPCPASSWORD=$(tr -cd '[:alnum:]' < /dev/urandom | fold -w22 | head -n1)
@@ -105,7 +105,7 @@ addnode=149.28.31.247
 EOF
 }
 
-function create_key() {
+function create_key {
 #   echo -e "Enter your ${RED}$COIN_NAME Masternode Private Key${NC}. Leave it blank to generate a new ${RED}Masternode Private Key${NC} for you:"
 #   read -e COINKEY
 #   if [[ -z "$COINKEY" ]]; then
@@ -128,7 +128,7 @@ function create_key() {
   COINKEY=building
 }
 
-function update_config() {
+function update_config {
   #sed -i 's/daemon=1/daemon=0/' $CONFIGFOLDER/$CONFIG_FILE
   cat << EOF >> $CONFIGFOLDER/$CONFIG_FILE
 logintimestamps=1
@@ -142,7 +142,7 @@ EOF
 }
 
 
-function enable_firewall() {
+function enable_firewall {
   echo -e "Installing and setting up firewall to allow ingress on port ${GREEN}$COIN_PORT${NC}"
   ufw allow $COIN_PORT/tcp comment "$COIN_NAME MN port" >/dev/null
   ufw allow ssh comment "SSH" >/dev/null 2>&1
@@ -152,7 +152,7 @@ function enable_firewall() {
 }
 
 
-function get_ip() {
+function get_ip {
   declare -a NODE_IPS
   for ips in $(netstat -i | awk '!/Kernel|Iface|lo/ {print $1," "}')
   do
@@ -176,7 +176,7 @@ function get_ip() {
 }
 
 
-function compile_error() {
+function compile_error {
 if [ "$?" -gt "0" ];
  then
   echo -e "${RED}Failed to compile $COIN_NAME. Please investigate.${NC}"
@@ -185,7 +185,7 @@ fi
 }
 
 
-function checks() {
+function checks {
 if [[ $(lsb_release -d) != *16.04* ]]; then
   echo -e "${RED}You are not running Ubuntu 16.04. Installation is cancelled.${NC}"
   exit 1
@@ -202,7 +202,7 @@ if [ -n "$(pidof $COIN_DAEMON)" ] || [ -e "$COIN_DAEMOM" ] ; then
 fi
 }
 
-function prepare_system() {
+function prepare_system {
 echo -e "Prepare the system to install ${GREEN}$COIN_NAME${NC} master node."
 apt-get update >/dev/null 2>&1
 DEBIAN_FRONTEND=noninteractive apt-get update > /dev/null 2>&1
@@ -231,7 +231,7 @@ fi
 clear
 }
 
-function create_swap() {
+function create_swap {
  echo -e "Checking if swap space is needed."
  PHYMEM=$(free -g|awk '/^Mem:/{print $2}')
  SWAP=$(swapon -s)
@@ -249,7 +249,7 @@ function create_swap() {
  clear
 }
 
-function important_information() {
+function important_information {
  echo -e "================================================================================================================================"
  echo -e "$COIN_NAME Masternode is up and running listening on port ${RED}$COIN_PORT${NC}."
  echo -e "Configuration file is: ${RED}$CONFIGFOLDER/$CONFIG_FILE${NC}"
@@ -266,7 +266,7 @@ function important_information() {
  echo -e "================================================================================================================================"
 }
 
-function setup_node() {
+function setup_node {
 #   get_ip
 #   create_config
   create_key
